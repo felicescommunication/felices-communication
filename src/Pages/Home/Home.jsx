@@ -67,7 +67,7 @@ function Home() {
   return (
     <>
     <Helmet>
-      <title>Logo, identité visuelle, site web & réseaux sociaux | Felices Communication</title>
+      <title>Felices Communication | Logo, identité visuelle, site web & réseaux sociaux</title>
       <meta
         name="description"
         content="Felices Communication vous accompagne dans la création de votre identité visuelle, de vos supports graphiques, de votre site internet ainsi que dans la gestion de vos réseaux sociaux."
