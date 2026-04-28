@@ -11,6 +11,9 @@ const SectionImpression = lazy(() => import("./SupportsGraphiques/SectionImpress
 const RealisationsSupports = lazy(() => import("./SupportsGraphiques/RealisationsSupports"))
 const CTASupports = lazy(() => import("./SupportsGraphiques/CTASupports"))
 
+import { Helmet } from "react-helmet"
+
+
 function SectionFallback() {
   return <section className="h-screen bg-[#F4EFC9]" />
 }
@@ -22,6 +25,13 @@ export default function Identite() {
 
   return (
     <>
+    <Helmet>
+      <title>Création de supports graphiques | Felices Communication</title>
+      <meta
+        name="description"
+        content="Création de supports graphiques : flyers, affiches, cartes de visite et visuels de communication pour développer votre visibilité."
+      />
+    </Helmet>
       <main>
 
         {/* HERO */}

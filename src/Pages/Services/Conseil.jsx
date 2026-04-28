@@ -11,6 +11,8 @@ const SectionConsulting = lazy(() => import("./Conseil//SectionConsulting"))
 const RealisationsConseil = lazy(() => import("./Conseil//RealisationsConseil"))
 const CTAConseil = lazy(() => import("./Conseil/CTAConseil"))
 
+import { Helmet } from "react-helmet"
+
 function SectionFallback() {
   return <section className="h-screen bg-[#F4EFC9]" />
 }
@@ -22,6 +24,13 @@ export default function Conseil() {
 
   return (
     <>
+     <Helmet>
+      <title>Conseil & stratégie digitale sur mesure | Felices Communication</title>
+      <meta
+        name="description"
+        content="Conseil et stratégie digitale pour structurer votre communication, définir vos objectifs et développer efficacement votre présence en ligne."
+      />
+    </Helmet>
       <main>
 
         {/* HERO */}

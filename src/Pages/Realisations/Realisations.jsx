@@ -17,6 +17,8 @@ import arrowLeft from "../../assets/arrow-left.svg"
 import arrowRight from "../../assets/arrow-right.svg"
 import arrowDown from "../../assets/arrow-down.svg"
 
+import { Helmet } from "react-helmet"
+
 const ImageParallax = lazy(() => import("../../components/UI/ImageParallax"))
 
 export default function Realisations() {
@@ -100,6 +102,13 @@ export default function Realisations() {
 
   return (
     <>
+    <Helmet>
+      <title>Réalisations : identité visuelle, logo, site web... | Felices Communication</title>
+      <meta
+        name="description"
+        content="Découvrez les réalisations de Felices Communication : identité visuelle, supports graphiques, sites web, et réseaux sociaux. Donnez vie à votre projet !"
+      />
+    </Helmet>
       {/* HERO */}
       <div className="relative isolate min-h-[70vh] lg:min-h-screen pt-28 pb-32 lg:pb-4 z-10">
         <Container>

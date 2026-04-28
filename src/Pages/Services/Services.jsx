@@ -11,6 +11,8 @@ const ServicesSupports = lazy(() => import("./ServicesSections/ServicesSupports"
 const ServicesSite = lazy(() => import("./ServicesSections/ServicesSite"))
 const ServicesReseaux = lazy(() => import("./ServicesSections/ServicesReseaux"))
 
+import { Helmet } from "react-helmet"
+
 function SectionFallback() {
   return (
     <section className="h-screen bg-[#F4EFC9]" />
@@ -24,6 +26,13 @@ useHighlightAnimation()
 
   return (
     <>
+   <Helmet>
+      <title>Stratégie, identité visuelle, supports graphiques, site web & réseaux sociaux | Felices Communication</title>
+      <meta
+        name="description"
+        content="Felices Communication vous accompagne dans votre stratégie digitale, dans votre création d’identité visuelle, de supports graphiques, de site web et dans la gestion des réseaux sociaux. Parlons de votre projet."
+      />
+    </Helmet>
       <main>
 
         {/* HERO */}

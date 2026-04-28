@@ -13,6 +13,9 @@ import useScrollAnimation from "../../components/UI/useScrollAnimation"
 
 import ScrollVelocity from "../../components/UI/ScrollVelocity"
 
+import { Helmet } from "react-helmet"
+
+
 function SectionFallback() {
   useEffect(() => {
   const timeout = setTimeout(() => {
@@ -63,6 +66,14 @@ function Home() {
 
   return (
     <>
+    <Helmet>
+      <title>Logo, identité visuelle, site web & réseaux sociaux | Felices Communication</title>
+      <meta
+        name="description"
+        content="Felices Communication vous accompagne dans la création de votre identité visuelle, de vos supports graphiques, de votre site internet ainsi que dans la gestion de vos réseaux sociaux."
+      />
+    </Helmet>
+
       <FloatingContactButton />
 
       <Hero />

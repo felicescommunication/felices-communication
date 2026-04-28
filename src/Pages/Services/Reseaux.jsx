@@ -11,6 +11,8 @@ const SectionEngagement = lazy(() => import("./Reseaux/SectionEngagement"));
 const RealisationsReseaux = lazy(() => import("./Reseaux/RealisationsReseaux"));
 const CTAReseaux = lazy(() => import("./Reseaux/CTAReseaux"));
 
+import { Helmet } from "react-helmet"
+
 function SectionFallback() {
   return <section className="h-screen bg-[#F4EFC9]" />;
 }
@@ -23,7 +25,13 @@ export default function Reseaux() {
   return (
     <>
       <main>
-
+<Helmet>
+      <title>Gestion des réseaux sociaux & stratégie digitale | Felices Communication</title>
+      <meta
+        name="description"
+        content="Gestion de vos réseaux sociaux : création de contenus, stratégie et publication pour développer votre visibilité et engager votre audience."
+      />
+    </Helmet>
         {/* HERO */}
         <HeroReseaux sectionRef={sectionRef} />
 

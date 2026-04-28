@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useState, useEffect, useRef, useCallback } from "react"
 import Button from "../../components/UI/Button"
 import closeIcon from "../../assets/ferme.png"
+import { Helmet } from "react-helmet"
 
 export default function Contact() {
 
@@ -89,6 +90,15 @@ export default function Contact() {
     }`
 
   return (
+<>
+<Helmet>
+      <title>Contact agence communication digitale | Felices Communication</title>
+      <meta
+        name="description"
+        content="Un projet digital ? Contactez Felices Communication pour la création de votre logo, identité visuelle, site web et la gestion de vos réseaux sociaux. Réponse rapide et accompagnement sur mesure."
+      />
+    </Helmet>
+
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -261,5 +271,6 @@ export default function Contact() {
 
       </div>
     </motion.div>
+    </>
   )
 }
