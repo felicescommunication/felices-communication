@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react"
 import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
 
-import bouton1 from "../assets/bouton contacte.svg"
+import bouton1 from "../../assets/bouton contacte.svg"
 import bouton2 from "../assets/bouton contacte2.svg"
 
 export default function FloatingContactButton() {
