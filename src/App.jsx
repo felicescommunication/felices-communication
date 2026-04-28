@@ -4,10 +4,10 @@ import { useState, lazy, Suspense } from "react"
 import ScrollToTop from "./components/Layout/ScrollToTop"
 import Navbar from "./components/Layout/Navbar"
 import Footer from "./components/Layout/Footer"
+import Contact from "./Pages/Contact/Contact"
 
 const Home = lazy(() => import("./Pages/Home/Home"))
 const Menu = lazy(() => import("./Pages/Menu/Menu"))
-const Contact = lazy(() => import("./Pages/Contact/Contact"))
 const Agence = lazy(() => import("./Pages/Agence/Agence"))
 const Services = lazy(() => import("./Pages/Services/Services"))
 
