@@ -12,7 +12,7 @@ export default function Intro() {
       <Container> 
         <div className="max-w-[1400px] text-center flex flex-col items-center">
 
-          <h2 className="font-['TitanOne'] text-[clamp(2.3rem,6vw,110px)] leading-[0.9] text-[#54001A] mb-10">
+          <h2 className="font-['TitanOne'] text-[clamp(2.1rem,6vw,110px)] leading-[0.9] text-[#54001A] mb-10">
             La communication qui fait parler de vous
           </h2>
 
