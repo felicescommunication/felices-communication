@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react"
 import { motion } from "framer-motion"
+import { Link } from "react-router-dom"
 
 export default function FloatingContactButton() {
   const [scrolledDown, setScrolledDown] = useState(false)
@@ -32,38 +33,35 @@ export default function FloatingContactButton() {
 
   const currentImage =
     hovered || !isSmall
-      ? "/src/assets/bouton contacte.svg"  
-      : "/src/assets/bouton contacte2.svg"  
+      ? "/src/assets/bouton contacte.svg"
+      : "/src/assets/bouton contacte2.svg"
 
-  const computedScale = hovered
-    ? 1.1
-    : isSmall
-    ? 0.7
-    : 1
+  const computedScale = hovered ? 1.1 : isSmall ? 0.7 : 1
 
   return (
-   <motion.a
-  href="/contact"
-  className="fixed bottom-4 right-4 md:bottom-6 md:right-6 lg:bottom-8 lg:right-4 z-50"
-  style={{ transformOrigin: "bottom right" }}
-  animate={{ scale: computedScale }}
-  transition={{
-    type: "spring",
-    stiffness: 200,
-    damping: 20
-  }}
-  onHoverStart={() => setHovered(true)}
-  onHoverEnd={() => setHovered(false)}
->
-      <motion.img
-  key={currentImage}
-  src={currentImage}
-  alt="Contact"
-  className="w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 object-contain"
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  transition={{ duration: 0.25 }}
-/>
-    </motion.a>
+    <motion.div
+      className="fixed bottom-4 right-4 md:bottom-6 md:right-6 lg:bottom-8 lg:right-4 z-50"
+      style={{ transformOrigin: "bottom right" }}
+      animate={{ scale: computedScale }}
+      transition={{
+        type: "spring",
+        stiffness: 200,
+        damping: 20
+      }}
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+    >
+      <Link to="/contact">
+        <motion.img
+          key={currentImage}
+          src={currentImage}
+          alt="Contact"
+          className="w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 object-contain"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.25 }}
+        />
+      </Link>
+    </motion.div>
   )
 }
