@@ -2,6 +2,9 @@ import { useEffect, useState, useRef } from "react"
 import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
 
+import bouton1 from "../assets/bouton contacte.svg"
+import bouton2 from "../assets/bouton contacte2.svg"
+
 export default function FloatingContactButton() {
   const [scrolledDown, setScrolledDown] = useState(false)
   const [isInHero, setIsInHero] = useState(true)
@@ -31,10 +34,11 @@ export default function FloatingContactButton() {
 
   const isSmall = !isInHero && scrolledDown
 
+  // ✅ UTILISATION DES IMPORTS
   const currentImage =
     hovered || !isSmall
-      ? "/src/assets/bouton contacte.svg"
-      : "/src/assets/bouton contacte2.svg"
+      ? bouton1
+      : bouton2
 
   const computedScale = hovered ? 1.1 : isSmall ? 0.7 : 1
 
