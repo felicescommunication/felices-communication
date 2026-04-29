@@ -33,54 +33,59 @@ function AppContent() {
 
   const location = useLocation()
 
-  
   const [variant, setVariant] = useState("default")
 
+  // ✅ AJOUT : état du menu popup
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const hideNavbar =
-    location.pathname === "/contact" ||
-    location.pathname === "/menu"
+    location.pathname === "/contact"
 
   const hideFooter =
     location.pathname === "/contact"
+
+  // ✅ MODIF : on ajoute menuOpen
+  const hideCookies =
+    location.pathname === "/contact" ||
+    menuOpen
 
   return (
     <>
       <ScrollToTop />
 
-
-      {!hideNavbar && <Navbar variant={variant} />}
-<CookiesSidebar />
+      {/* ✅ on passe setMenuOpen à la Navbar */}
+      {!hideNavbar && <Navbar variant={variant} setMenuOpen={setMenuOpen} />}
+      
+      {!hideCookies && <CookiesSidebar />}
 
       <Suspense fallback={
-  <div className="h-screen flex items-center justify-center bg-[#F4EFC9]">
-    <p className="text-[#021d36]">Chargement...</p>
-  </div>
-}>
-  <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/contact" element={<Contact />} />
+        <div className="h-screen flex items-center justify-center bg-[#F4EFC9]">
+          <p className="text-[#021d36]">Chargement...</p>
+        </div>
+      }>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/menu" element={<Menu />} />
+          <Route path="/contact" element={<Contact />} />
 
-        <Route path="/realisations" element={<Realisations />} />
-        <Route path="/realisations/:slug" element={<RealisationPage />} />
+          <Route path="/realisations" element={<Realisations />} />
+          <Route path="/realisations/:slug" element={<RealisationPage />} />
 
-        <Route path="/services" element={<Services />} />
-        <Route path="/agence" element={<Agence />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/agence" element={<Agence />} />
 
-        <Route path="/services/conseil" element={<Conseil />} />
-        <Route path="/services/identite" element={<Identite />} />
-        <Route path="/services/supports-graphiques" element={<Supports />} />
-        <Route path="/services/site-web" element={<SiteWeb />} />
-        <Route path="/services/reseaux" element={<Reseaux />} />
+          <Route path="/services/conseil" element={<Conseil />} />
+          <Route path="/services/identite" element={<Identite />} />
+          <Route path="/services/supports-graphiques" element={<Supports />} />
+          <Route path="/services/site-web" element={<SiteWeb />} />
+          <Route path="/services/reseaux" element={<Reseaux />} />
 
-        <Route path="/mentions-legales" element={<MentionsLegales />} />
-        <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
+          <Route path="/mentions-legales" element={<MentionsLegales />} />
+          <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
 
-        
-        <Route path="*" element={<NotFound setVariant={setVariant} />} />
+          <Route path="*" element={<NotFound setVariant={setVariant} />} />
         </Routes>
-</Suspense>
+      </Suspense>
 
       {!hideFooter && <Footer />}
     </>

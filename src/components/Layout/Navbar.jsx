@@ -8,7 +8,7 @@ import burgerIcon from "../../assets/menu-burger.svg"
 import logoDefault from "../../assets/felices.svg"
 import logoBeige from "../../assets/felices-beige.png"
 
-export default function Navbar({ variant = "default" }) {
+export default function Navbar({ variant = "default", setMenuOpen: setGlobalMenuOpen }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [menuHover, setMenuHover] = useState(null)
   const [scrollProgress, setScrollProgress] = useState(0)
@@ -88,7 +88,13 @@ export default function Navbar({ variant = "default" }) {
           {/* menu burger */}
           <motion.button
             className="absolute left-0 flex items-center justify-center z-50 p-2"
-            onClick={() => setMenuOpen(prev => !prev)} 
+            onClick={() => {
+              setMenuOpen(prev => {
+                const newState = !prev
+                setGlobalMenuOpen(newState) // ✅ synchro avec App
+                return newState
+              })
+            }}
             whileHover={{ scale: 1.15 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
             style={{ scale: safeScale }}
@@ -106,7 +112,10 @@ export default function Navbar({ variant = "default" }) {
           </motion.button>
 
           {/* logo */}
-          <Link to="/" onClick={() => setMenuOpen(false)}>
+          <Link to="/" onClick={() => {
+            setMenuOpen(false)
+            setGlobalMenuOpen(false) // ✅ synchro fermeture
+          }}>
             <motion.img
               src={
                 menuHover === "services-active"
@@ -129,7 +138,10 @@ export default function Navbar({ variant = "default" }) {
       <AnimatePresence>
         {menuOpen && (
           <MenuOverlay
-            onClose={() => setMenuOpen(false)}
+            onClose={() => {
+              setMenuOpen(false)
+              setGlobalMenuOpen(false) // ✅ synchro fermeture
+            }}
             setMenuHover={setMenuHover}
           />
         )}
