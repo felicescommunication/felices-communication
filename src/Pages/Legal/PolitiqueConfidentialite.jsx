@@ -55,7 +55,7 @@ export default function MentionsLegales() {
               </h3>
               <p className="mb-8 text-sm sm:text-base leading-relaxed">
                 Felices Communication<br />
-                Courriel de contact : othilielefebvre.pro@gmail.com
+                Courriel de contact : contact@felices-communication.com
               </p>
 
               <h3 id="formulaires" className="text-xl sm:text-2xl mt-12 mb-4 scroll-mt-30">

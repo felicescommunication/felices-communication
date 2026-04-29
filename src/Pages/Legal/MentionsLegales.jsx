@@ -28,15 +28,17 @@ export default function MentionsLegales() {
           {/* Création du site */}
           <Section title="Création du site" className="break-words">
             Créateur : Felices Communication<br />
-            Adresse de courrier électronique : othilielefebvre.pro@gmail.com<br />
+            Adresse de courrier électronique : contact@felices-communication.com<br />
             Numéro de téléphone : (+33) 06 26 64 10 66
           </Section>
 
           {/* Hébergeur */}
           <Section title="Hébergeur">
-            Raison sociale :<br />
-            Adresse :<br />
-            Numéro de téléphone :
+            Raison sociale : Vercel Inc.<br />
+            Adresse : 440 N Barranca Avenue #4133<br />
+            Covina, CA 91723 <br />
+            United States <br />
+            Site web : <strong><a href="https://vercel.com" target="_blank" rel="noopener noreferrer">vercel.com</a></strong>
           </Section>
 
         </div>
