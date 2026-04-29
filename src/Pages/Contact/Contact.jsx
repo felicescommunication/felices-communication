@@ -42,7 +42,13 @@ export default function Contact() {
 
     inputs.forEach((input) => {
       if (input.name === "telephone" && !input.value.trim()) return
-      if (!input.checkValidity()) invalid.push(input.name)
+
+      // ✅ AJOUT checkbox
+      if (input.type === "checkbox" && !input.checked) {
+        invalid.push(input.name)
+      } else if (!input.checkValidity()) {
+        invalid.push(input.name)
+      }
     })
 
     if (invalid.length) {
@@ -238,15 +244,35 @@ export default function Contact() {
             }`}
           />
 
+          {/* ✅ CHECKBOX RGPD AJOUTÉE */}
+          <motion.label
+  className="flex items-start gap-2 text-[11px] lg:text-[12px] leading-tight mt-2 max-w-[90%]"
+  animate={invalidFields.includes("consent") ? shake : {}}
+>
+  <input
+    type="checkbox"
+    name="consent"
+    required
+    onChange={handleInputChange}
+    className="mt-[3px] accent-[#FFCFF5] scale-90"
+  />
+  <span>
+    J’ai lu et j’accepte la{" "}
+    <a href="/politique-confidentialite" className="underline">
+      politique de confidentialité
+    </a>. Je consens à ce que les données soient collectées et stockées pour traiter ma demande.
+  </span>
+</motion.label>
+
           {error && (
             <p className="text-[#FFCFF5] text-center">
-              * Remplissez les champs obligatoires
+              * Remplissez les champs obligatoires et acceptez la politique de confidentialité
             </p>
           )}
 
           <Button
             type="submit"
-            className="mt-6 mx-auto block bg-[#FFCFF5] !text-[#031E39] px-10 py-3 rounded-full transition-all duration-300 hover:bg-[#F4EFC9] hover:!text-[#54001A] hover:scale-110"
+            className="mt-1 mx-auto block bg-[#FFCFF5] !text-[#031E39] px-10 py-3 rounded-full transition-all duration-300 hover:bg-[#F4EFC9] hover:!text-[#54001A] hover:scale-110"
           >
             Envoyer
           </Button>
