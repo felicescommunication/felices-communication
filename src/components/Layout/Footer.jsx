@@ -91,6 +91,14 @@ export default function Footer() {
       Politique de confidentialité
     </Link>
 
+    {/* ✅ AJOUT */}
+    <button
+      onClick={() => window.dispatchEvent(new Event("openCookies"))}
+      className="hover:opacity-100 transition"
+    >
+      Gérer mes cookies
+    </button>
+
   </div>
 </div>
     </footer>
