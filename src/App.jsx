@@ -5,6 +5,7 @@ import ScrollToTop from "./components/Layout/ScrollToTop"
 import Navbar from "./components/Layout/Navbar"
 import Footer from "./components/Layout/Footer"
 import Contact from "./Pages/Contact/Contact"
+import CookiesSidebar from "./components/Cookies/CookiesSidebar"
 
 const Home = lazy(() => import("./Pages/Home/Home"))
 const Menu = lazy(() => import("./Pages/Menu/Menu"))
@@ -49,6 +50,7 @@ function AppContent() {
 
 
       {!hideNavbar && <Navbar variant={variant} />}
+<CookiesSidebar />
 
       <Suspense fallback={
   <div className="h-screen flex items-center justify-center bg-[#F4EFC9]">
