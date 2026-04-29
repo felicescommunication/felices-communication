@@ -70,9 +70,11 @@ export default function ContactHome() {
         return
       }
 
-      if (!input.checkValidity()) {
-        invalid.push(input.name)
-      }
+      if (input.type === "checkbox" && !input.checked) {
+  invalid.push(input.name)
+} else if (!input.checkValidity()) {
+  invalid.push(input.name)
+}
 
     })
 
@@ -330,29 +332,27 @@ invalidFields.includes("projet")
 }`}
 />
 
-           <p className="text-[6px] lg:text-[7px] leading-snug text-[#031E39]/70 max-w-[640px] text-left">
-              Les informations obtenues via ce formulaire seront utilisées uniquement pour répondre à votre demande et seront conservées au maximum deux années. Conformément à la loi du 6 janvier 1978 relative à l’informatique, aux fichiers et aux libertés, tout utilisateur dispose d’un droit d’accès, de rectification et d’opposition aux données personnelles le concernant. 
-<br />Ce site est protégé par reCAPTCHA et Google :
-              <a
-                href="https://policies.google.com/privacy"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {" "}politique de confidentialité
-              </a>
-              {" "}et les
-              <a
-                href="https://policies.google.com/terms"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {" "}conditions d'utilisation
-              </a>
-              {" "}s'appliquent.
-            </p>
+           <motion.label
+  className="flex items-start gap-2 text-[12px] leading-tight text-[#031E39] max-w-[640px]"
+  animate={invalidFields.includes("consent") ? { x: [0, -4, 4, -4, 4, 0] } : {}}
+>
+  <input
+    type="checkbox"
+    name="consent"
+    required
+    onChange={handleInputChange}
+    className="mt-[3px] accent-[#54001A] scale-90"
+  />
+  <span>
+    J’ai lu et j’accepte la{" "}
+    <a href="/politique-confidentialite" className="underline">
+      politique de confidentialité
+    </a>. Je consens à l’utilisation de mes données pour traiter ma demande.*
+  </span>
+</motion.label>
 {error && (
   <p className="text-[#54001A] text-sm text-center">
-    <span className="highlight is-visible font-bold">*Remplissez les champs obligatoires</span>
+    <span className="highlight is-visible font-bold">*Remplissez les champs obligatoires et acceptez la politique de confidentialité</span>
   </p>
 )}
 <motion.div
