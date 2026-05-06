@@ -46,7 +46,7 @@ const projets = [
       },
       {
         text1:
-          "La refonte du logo avait pour objectif d’affirmer [une identité forte] en cohérence avec les valeurs de l’association. Tout préservant la dimension humaine et accessible qui la caractérise. Le logo a ainsi été pensé comme [un symbole de proximité, de confiance et d’engagement collectif].",
+          "La refonte du logo avait pour objectif d’affirmer [une identité forte] en cohérence avec les valeurs de l’association. Tout en préservant la dimension humaine et accessible qui la caractérise. Le logo a ainsi été pensé comme [un symbole de proximité, de confiance et d’engagement collectif].",
         text2:
           "L’identité visuelle repose sur une palette de couleurs inspirée des différents [axes de l’association] : [la précarité], [l’environnement], [la sensibilisation] ainsi que [la mise en réseau et les projets collectifs]. Le beige, vert, rose saumon et blanc, associés à des choix typographiques affirmés, permettent de créer un univers pensé pour [créer du lien].",
 
