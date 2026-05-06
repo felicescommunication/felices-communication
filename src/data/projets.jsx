@@ -12,7 +12,7 @@ const projets = [
 
     hero: {
       type: "image", // "image" ou "video"
-      src: "/images/projets/la-debrouille/logo-la-débrouille.webp"
+      src: "/images/projets/la-debrouille/logo-la-debrouille.webp"
     },
 
     intro:
