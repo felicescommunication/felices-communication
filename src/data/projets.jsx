@@ -129,7 +129,7 @@ const projets = [
 
     hero: {
       type: "image", // "image" ou "video"
-      src: "/images/projets/bch-compresseurs/hero.svg"
+      src: "/images/projets/bch-compresseurs/hero.webp"
     },
 
     intro:

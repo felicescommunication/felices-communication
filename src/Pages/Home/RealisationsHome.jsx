@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useRef } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import Container from "../../components/UI/Container"
 import Button from "../../components/UI/Button"
@@ -9,8 +9,6 @@ import arrowRight from "../../assets/arrow-right.svg"
 export default function Realisations() {
 
   const navigate = useNavigate()
-
-  const autoplayRef = useRef(null)
   const sliderRef = useRef(null)
 
   const [scrollState, setScrollState] = useState({
@@ -35,27 +33,17 @@ export default function Realisations() {
 
   const [currentRealisationPage, setCurrentRealisationPage] = useState(0)
 
-  const prevRealisationPage = () => {
-    setCurrentRealisationPage(prev =>
-      prev === 0 ? realisationPages.length - 1 : prev - 1
-    )
-  }
+ const prevRealisationPage = () => {
+  setCurrentRealisationPage(prev =>
+    prev > 0 ? prev - 1 : prev
+  )
+}
 
-  const nextRealisationPage = () => {
-    setCurrentRealisationPage(prev =>
-      prev === realisationPages.length - 1 ? 0 : prev + 1
-    )
-  }
-
-  useEffect(() => {
-    autoplayRef.current = setInterval(() => {
-      setCurrentRealisationPage(prev =>
-        prev === realisationPages.length - 1 ? 0 : prev + 1
-      )
-    }, 3000)
-
-    return () => clearInterval(autoplayRef.current)
-  }, [realisationPages.length])
+const nextRealisationPage = () => {
+  setCurrentRealisationPage(prev =>
+    prev < realisationPages.length - 1 ? prev + 1 : prev
+  )
+}
 
   const handleScroll = () => {
     const el = sliderRef.current
@@ -187,16 +175,8 @@ export default function Realisations() {
 
         {/* desktop */}
         <div
-          className="hidden lg:flex justify-center items-center gap-24 mt-6 transition-all duration-500 w-full"
-          onMouseEnter={() => clearInterval(autoplayRef.current)}
-          onMouseLeave={() => {
-            autoplayRef.current = setInterval(() => {
-              setCurrentRealisationPage(prev =>
-                prev === realisationPages.length - 1 ? 0 : prev + 1
-              )
-            }, 3000)
-          }}
-        >
+  className="hidden lg:flex justify-center items-center gap-24 mt-6 transition-all duration-500 w-full"
+>
 
           {realisationPages[currentRealisationPage]?.map((item, index) => (
 
@@ -238,9 +218,17 @@ export default function Realisations() {
         {/* points */}
         <div className="hidden lg:flex items-center justify-center gap-5 mt-12">
 
-          <button type="button" className="arrow arrow-left" onClick={prevRealisationPage}>
-            <img src={arrowLeft} alt="Précédent" />
-          </button>
+          <button
+  type="button"
+  onClick={prevRealisationPage}
+  className={`arrow arrow-left transition-opacity ${
+    currentRealisationPage === 0
+      ? "opacity-0 pointer-events-none"
+      : "opacity-100"
+  }`}
+>
+  <img src={arrowLeft} alt="Précédent" />
+</button>
 
           <div className="flex gap-2">
             {realisationPages.map((_, index) => (
@@ -252,9 +240,17 @@ export default function Realisations() {
             ))}
           </div>
 
-          <button type="button" className="arrow arrow-right" onClick={nextRealisationPage}>
-            <img src={arrowRight} alt="Suivant" />
-          </button>
+          <button
+  type="button"
+  onClick={nextRealisationPage}
+  className={`arrow arrow-right transition-opacity ${
+    currentRealisationPage === realisationPages.length - 1
+      ? "opacity-0 pointer-events-none"
+      : "opacity-100"
+  }`}
+>
+  <img src={arrowRight} alt="Suivant" />
+</button>
 
         </div>
 

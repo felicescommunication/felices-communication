@@ -22,6 +22,7 @@ export default function RealisationsReseaux() {
   const [scrollState, setScrollState] = useState({ start: true, end: false });
   const [currentRealisationPage, setCurrentRealisationPage] = useState(0);
 
+  // ✅ MEMO
   const realisations = useMemo(() => {
     return [...projets]
       .sort((a, b) => new Date(b.date) - new Date(a.date))
@@ -42,24 +43,17 @@ export default function RealisationsReseaux() {
     return pages;
   }, [realisations]);
 
-  const nextRealisationPage = useCallback(() => {
-    setCurrentRealisationPage(prev =>
-      prev === realisationPages.length - 1 ? 0 : prev + 1
-    );
-  }, [realisationPages.length]);
+ const nextRealisationPage = useCallback(() => {
+  setCurrentRealisationPage(prev =>
+    prev < realisationPages.length - 1 ? prev + 1 : prev
+  );
+}, [realisationPages.length]);
 
-  const prevRealisationPage = useCallback(() => {
-    setCurrentRealisationPage(prev =>
-      prev === 0 ? realisationPages.length - 1 : prev - 1
-    );
-  }, [realisationPages.length]);
-
-  useEffect(() => {
-    if (!realisationPages.length) return;
-
-    const interval = setInterval(nextRealisationPage, 3000);
-    return () => clearInterval(interval);
-  }, [nextRealisationPage, realisationPages.length]);
+const prevRealisationPage = useCallback(() => {
+  setCurrentRealisationPage(prev =>
+    prev > 0 ? prev - 1 : prev
+  );
+}, []);
 
   const handleScroll = useCallback(() => {
     const el = sliderRef.current;
@@ -86,7 +80,7 @@ export default function RealisationsReseaux() {
           </h2>
         </div>
 
-        {/* MOBILE */}
+        {/* mobile */}
         <div className="lg:hidden relative w-full">
 
           <div
@@ -211,9 +205,16 @@ export default function RealisationsReseaux() {
         {/* pagination */}
         <div className="hidden lg:flex items-center justify-center gap-5 mt-12">
 
-          <button className="arrow arrow-left" onClick={prevRealisationPage}>
-            <img src={arrowLeft} alt="prev" />
-          </button>
+          <button
+  className={`arrow arrow-left transition-opacity ${
+    currentRealisationPage === 0
+      ? "opacity-0 pointer-events-none"
+      : "opacity-100"
+  }`}
+  onClick={prevRealisationPage}
+>
+  <img src={arrowLeft} alt="prev" />
+</button>
 
           <div className="flex gap-2">
             {realisationPages.map((_, index) => (
@@ -225,9 +226,16 @@ export default function RealisationsReseaux() {
             ))}
           </div>
 
-          <button className="arrow arrow-right" onClick={nextRealisationPage}>
-            <img src={arrowRight} alt="next" />
-          </button>
+          <button
+  className={`arrow arrow-right transition-opacity ${
+    currentRealisationPage === realisationPages.length - 1
+      ? "opacity-0 pointer-events-none"
+      : "opacity-100"
+  }`}
+  onClick={nextRealisationPage}
+>
+  <img src={arrowRight} alt="next" />
+</button>
 
         </div>
 

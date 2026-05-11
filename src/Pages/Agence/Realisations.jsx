@@ -2,7 +2,7 @@ import Container from "../../components/UI/Container";
 import Button from "../../components/UI/Button";
 
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useState, useRef, useMemo, useCallback } from "react";
 
 import useHighlightAnimation from "../../components/UI/useHighlightAnimation";
 import useScrollAnimation from "../../components/UI/useScrollAnimation";
@@ -43,24 +43,17 @@ export default function RealisationsConseil() {
     return pages;
   }, [realisations]);
 
-  const nextRealisationPage = useCallback(() => {
-    setCurrentRealisationPage(prev =>
-      prev === realisationPages.length - 1 ? 0 : prev + 1
-    );
-  }, [realisationPages.length]);
+ const nextRealisationPage = useCallback(() => {
+  setCurrentRealisationPage(prev =>
+    prev < realisationPages.length - 1 ? prev + 1 : prev
+  );
+}, [realisationPages.length]);
 
-  const prevRealisationPage = useCallback(() => {
-    setCurrentRealisationPage(prev =>
-      prev === 0 ? realisationPages.length - 1 : prev - 1
-    );
-  }, [realisationPages.length]);
-
-  useEffect(() => {
-    if (!realisationPages.length) return;
-
-    const interval = setInterval(nextRealisationPage, 3000);
-    return () => clearInterval(interval);
-  }, [nextRealisationPage, realisationPages.length]);
+const prevRealisationPage = useCallback(() => {
+  setCurrentRealisationPage(prev =>
+    prev > 0 ? prev - 1 : prev
+  );
+}, []);
 
   const handleScroll = useCallback(() => {
     const el = sliderRef.current;
@@ -212,9 +205,16 @@ export default function RealisationsConseil() {
         {/* pagination */}
         <div className="hidden lg:flex items-center justify-center gap-5 mt-12">
 
-          <button className="arrow arrow-left" onClick={prevRealisationPage}>
-            <img src={arrowLeft} alt="prev" />
-          </button>
+          <button
+  className={`arrow arrow-left transition-opacity ${
+    currentRealisationPage === 0
+      ? "opacity-0 pointer-events-none"
+      : "opacity-100"
+  }`}
+  onClick={prevRealisationPage}
+>
+  <img src={arrowLeft} alt="prev" />
+</button>
 
           <div className="flex gap-2">
             {realisationPages.map((_, index) => (
@@ -226,9 +226,16 @@ export default function RealisationsConseil() {
             ))}
           </div>
 
-          <button className="arrow arrow-right" onClick={nextRealisationPage}>
-            <img src={arrowRight} alt="next" />
-          </button>
+          <button
+  className={`arrow arrow-right transition-opacity ${
+    currentRealisationPage === realisationPages.length - 1
+      ? "opacity-0 pointer-events-none"
+      : "opacity-100"
+  }`}
+  onClick={nextRealisationPage}
+>
+  <img src={arrowRight} alt="next" />
+</button>
 
         </div>
 

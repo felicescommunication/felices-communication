@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import logo from "../../assets/felices-beige.png"
+import logo from "../../assets/felices-beige.svg"
 
 const linkStyle =
   "font-['TitanOne'] text-xl md:text-2xl hover:text-[#FFCFF5] transition hover:translate-x-1"

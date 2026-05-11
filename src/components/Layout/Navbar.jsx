@@ -15,6 +15,10 @@ export default function Navbar({ variant = "default", setMenuOpen: setGlobalMenu
 
   const location = useLocation()
 
+  useEffect(() => {
+  setMenuHover(null)
+}, [location.pathname])
+
   const isHome = location.pathname === "/"
   const isTransparent = variant === "transparent" || isHome
 
@@ -118,10 +122,10 @@ export default function Navbar({ variant = "default", setMenuOpen: setGlobalMenu
           }}>
             <motion.img
               src={
-                menuHover === "services-active"
-                  ? logoBeige
-                  : logoDefault
-              }
+  menuOpen && menuHover === "services-active"
+    ? logoBeige
+    : logoDefault
+}
               alt="Felices"
               className={`w-44 md:w-56 cursor-pointer ${
                 menuOpen ? "hidden md:block" : "block"
