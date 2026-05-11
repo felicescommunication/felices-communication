@@ -183,7 +183,7 @@ export default function RealisationPage() {
                     src={hero?.src}
                     alt={projet.title}
                     loading="lazy"
-                    className="w-full max-w-[400px] h-[250px] sm:h-[300px] md:h-[304px] object-cover rounded-3xl"
+                    className="w-full max-w-[400px] h-[270px] sm:h-[300px] md:h-[304px] object-cover rounded-3xl"
                   />
                 )}
               </div>
