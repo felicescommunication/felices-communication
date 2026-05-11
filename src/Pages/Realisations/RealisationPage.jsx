@@ -159,7 +159,7 @@ export default function RealisationPage() {
                   <strong>{projet.title}</strong>
                 </p>
 
-                <h2 className="font-['TitanOne'] text-[50px] md:text-7xl lg:text-[70px] text-[#54001A] leading-none mb-8">
+                <h2 className="font-['TitanOne'] text-[35px] md:text-7xl lg:text-[70px] text-[#54001A] leading-none mb-8">
                   {projet.title}
                 </h2>
 
