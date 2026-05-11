@@ -65,7 +65,7 @@ const projets = [
     categories: ["Identité visuelle", "Supports graphiques"],
 
     slug: "la-débrouille",
-    date: "2026-03-16",
+    date: "2026-05-06",
 
     cover: "/images/projets/la-debrouille/la-d.webp",
 
@@ -78,9 +78,6 @@ const projets = [
       "Identité visuelle | Supports graphiques",
 
     // ✅ GALLERY AVEC TYPES
-    gallery: [
-  { type: "video", src: "/images/projets/la-debrouille/demo.MOV" }
-],
 
     bottomGallery: [
       { type: "image", src: "/images/projets/la-debrouille/identite-la-d.webp" },
@@ -113,6 +110,56 @@ const projets = [
           { type: "image", src: "/images/projets/la-debrouille/collier-la-d.webp" },
           { type: "image", src: "/images/projets/la-debrouille/coque-la-d.webp" },
           { type: "image", src: "/images/projets/la-debrouille/sticker-la-d.webp" }
+        ]
+      }
+    ]
+  },
+
+  {
+    id: 3,
+    title: "BCH Compresseurs",
+
+    categories: ["Supports graphiques", "Réseaux sociaux"],
+
+    slug: "bch-compresseurs",
+    date: "2026-04-06",
+
+    cover: "/images/projets/bch-compresseurs/BCH.webp",
+
+
+    hero: {
+      type: "image", // "image" ou "video"
+      src: "/images/projets/bch-compresseurs/hero.svg"
+    },
+
+    intro:
+      "Supports graphiques | Réseaux sociaux",
+
+    sections: [
+      {
+        text1:
+          "Felices Communication travaille pour [BCH Compresseurs], entreprise savoyarde spécialisée dans les gaz haute pression respirables, dans le développement de sa [communication visuelle et digitale], ainsi que dans la [création de ses supports graphiques].",
+        text2:
+          "Cette collaboration s’inscrit dans une volonté d’accompagner [l’évolution de l’entreprise] à travers [une image plus moderne], plus structurée et en adéquation avec son expertise, tout en renforçant [sa visibilité] auprès de ses différents publics.",
+
+        images: [
+          { type: "image", src: "/images/projets/bch-compresseurs/BCH.webp" },
+          { type: "image", src: "/images/projets/bch-compresseurs/depliant.webp" },
+          { type: "image", src: "/images/projets/bch-compresseurs/panneau-BCH.webp" },
+          { type: "image", src: "/images/projets/bch-compresseurs/doc-commerciale.webp" }
+        ]
+      },
+      {
+        text1:
+          "Nous avons conçu plusieurs [supports de communication] : flyers, stickers, dépliants commerciaux, documents commerciaux, cartes de visite... afin de construire [une image cohérente] sur l’ensemble de ses outils.",
+        text2:
+          "Conjointement, une [stratégie digitale] a été mise en place afin d'assurer une continuité dans leur communication. Ce travail comprend [la création de contenus] (photo/vidéo) pour les réseaux sociaux, [la programmation des publications] ainsi que [l’animation de la communauté], avec pour objectif : valoriser le savoir-faire de l’entreprise et soutenir son développement.",
+
+        images: [
+         { type: "image", src: "/images/projets/bch-compresseurs/flyer.webp" },
+          { type: "image", src: "/images/projets/bch-compresseurs/carte-de-visite.webp" },
+          { type: "image", src: "/images/projets/bch-compresseurs/RS1.webp" },
+          { type: "image", src: "/images/projets/bch-compresseurs/RS2.webp" }
         ]
       }
     ]

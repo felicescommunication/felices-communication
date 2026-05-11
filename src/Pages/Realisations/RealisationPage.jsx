@@ -191,27 +191,29 @@ export default function RealisationPage() {
             </div>
           </div>
 
-          <div className="w-full overflow-hidden mt-10">
+          <div className="w-full overflow-hidden">
             <ScrollVelocity
               texts={[projet.title]}
               velocity={60}
-              className="font-['TitanOne'] text-[18vw] lg:text-[22vw] text-[#54001A] opacity-10 whitespace-nowrap"
+              className="font-['TitanOne'] text-[18vw] lg:text-[22vw] text-[#54001A] leading-[1.1] opacity-10 whitespace-nowrap"
             />
           </div>
         </div>
 
         {/* carousel */}
-        <section className="bg-[#F4EFC9] mb-22 lg:mb-40 animate-section">
-          <Container>
-            <div className="max-w-[1400px] mx-auto">
-              <ImageCarousel
-                images={projet.gallery}
-                className="h-[300px] sm:h-[300px] md:h-[400px] lg:h-[650px]"
-                wrapperClass="w-full max-w-[600px] sm:max-w-[800px] lg:max-w-[1000px] xl:max-w-[1200px] mx-auto"
-              />
-            </div>
-          </Container>
-        </section>
+{projet.gallery?.length > 0 && (
+  <section className="bg-[#F4EFC9] mb-22 lg:mb-40 animate-section">
+    <Container>
+      <div className="max-w-[1400px] mx-auto">
+        <ImageCarousel
+          images={projet.gallery}
+          className="h-[300px] sm:h-[300px] md:h-[400px] lg:h-[650px]"
+          wrapperClass="w-full max-w-[600px] sm:max-w-[800px] lg:max-w-[1000px] xl:max-w-[1200px] mx-auto"
+        />
+      </div>
+    </Container>
+  </section>
+)}
 
         {/* Sections */}
         {projet.sections?.map((section, index) => {
@@ -262,24 +264,28 @@ export default function RealisationPage() {
           )
         })}
 
-        {/* Boutons */}
-        <section className="bg-[#F4EFC9] mb-22 lg:mb-40 animate-section">
-          <Container>
-            <div className="max-w-[1400px] mx-auto">
+        {/* Bottom gallery */}
+{projet.bottomGallery?.length > 0 && (
+  <section className="bg-[#F4EFC9] mb-22 lg:mb-40 animate-section">
+    <Container>
+      <div className="max-w-[1400px] mx-auto">
 
-              <ImageCarousel
-                images={projet.bottomGallery}
-                className="h-[300px] sm:h-[300px] md:h-[400px] lg:h-[480px]"
-                wrapperClass="w-full max-w-[600px] sm:max-w-[800px] lg:max-w-[1000px] xl:max-w-[1200px] mx-auto"
-              />
+        <ImageCarousel
+          images={projet.bottomGallery}
+          className="h-[300px] sm:h-[300px] md:h-[400px] lg:h-[480px]"
+          wrapperClass="w-full max-w-[600px] sm:max-w-[800px] lg:max-w-[1000px] xl:max-w-[1200px] mx-auto"
+        />
 
-              <h3 className="font-['TitanOne'] text-[#021d36] text-[26px] sm:text-[30px] lg:text-[35px] mt-10 mb-6 text-center">
-                {projet.bottomTitle}
-              </h3>
+        {projet.bottomTitle && (
+          <h3 className="font-['TitanOne'] text-[#021d36] text-[26px] sm:text-[30px] lg:text-[35px] mt-10 mb-6 text-center">
+            {projet.bottomTitle}
+          </h3>
+        )}
 
-            </div>
-          </Container>
-        </section>
+      </div>
+    </Container>
+  </section>
+)}
 
         {/* CTA */}
         <section className="mb-22 lg:mb-30 animate-section">
