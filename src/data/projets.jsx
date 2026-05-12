@@ -138,9 +138,9 @@ const projets = [
     sections: [
       {
         text1:
-          "Felices Communication travaille pour [BCH Compresseurs], entreprise savoyarde spécialisée dans les gaz haute pression respirables, dans le développement de sa [communication visuelle et digitale], ainsi que dans la [création de ses supports graphiques].",
+          "BCH Compresseurs, entreprise savoyarde spécialisée dans les gaz haute pression respirables, souhaitait moderniser son image. Un travail de développement de sa communication visuelle et digitale a ainsi été mené, accompagné par la création de différents supports graphiques.",
         text2:
-          "Cette collaboration s’inscrit dans une volonté d’accompagner [l’évolution de l’entreprise] à travers [une image plus moderne], plus structurée et en adéquation avec son expertise, tout en renforçant [sa visibilité] auprès de ses différents publics.",
+          "Ce projet visait à accompagner l’évolution de l’entreprise à travers une image plus cohérente, plus structurée et en adéquation avec son expertise, tout en renforçant sa visibilité auprès de ses différents publics.",
 
         images: [
           { type: "image", src: "/images/projets/bch-compresseurs/BCH.webp" },
@@ -151,9 +151,9 @@ const projets = [
       },
       {
         text1:
-          "Nous avons conçu plusieurs [supports de communication] : flyers, stickers, dépliants commerciaux, documents commerciaux, cartes de visite... afin de construire [une image cohérente] sur l’ensemble de ses outils.",
+          "Plusieurs supports de communication ont ainsi été conçus : flyers, stickers, dépliants commerciaux, documents commerciaux, cartes de visite… afin de construire une image cohérente sur l’ensemble de ses outils.",
         text2:
-          "Conjointement, une [stratégie digitale] a été mise en place afin d'assurer une continuité dans leur communication. Ce travail comprend [la création de contenus] (photo/vidéo) pour les réseaux sociaux, [la programmation des publications] ainsi que [l’animation de la communauté], avec pour objectif : valoriser le savoir-faire de l’entreprise et soutenir son développement.",
+          "Conjointement, une stratégie digitale a été mise en place afin d’assurer une continuité dans leur communication. Ce travail comprenait la création de contenus photo et vidéo pour les réseaux sociaux, la programmation des publications ainsi que l’animation de la communauté, avec pour objectif de valoriser le savoir-faire de l’entreprise et de soutenir son développement.",
 
         images: [
          { type: "image", src: "/images/projets/bch-compresseurs/flyer.webp" },
