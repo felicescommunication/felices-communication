@@ -153,7 +153,7 @@ const projets = [
         text1:
           "Plusieurs supports de communication ont ainsi été conçus : flyers, stickers, dépliants commerciaux, documents commerciaux, cartes de visite… afin de construire une image cohérente sur l’ensemble de ses outils.",
         text2:
-          "Conjointement, une stratégie digitale a été mise en place afin d’assurer une continuité dans leur communication. Ce travail comprenait la création de contenus photo et vidéo pour les réseaux sociaux, la programmation des publications ainsi que l’animation de la communauté, avec pour objectif de valoriser le savoir-faire de l’entreprise et de soutenir son développement.",
+          "Conjointement, une stratégie digitale a été mise en place afin d’assurer une continuité dans leur communication. Ce travail comprenait la création de contenus (photo/vidéo) pour les réseaux sociaux, la programmation des publications ainsi que l’animation de la communauté, avec pour objectif de valoriser le savoir-faire de l’entreprise et de soutenir son développement.",
 
         images: [
          { type: "image", src: "/images/projets/bch-compresseurs/flyer.webp" },
