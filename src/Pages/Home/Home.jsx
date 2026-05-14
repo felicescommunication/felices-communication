@@ -67,10 +67,10 @@ function Home() {
   return (
     <>
     <Helmet>
-      <title>Felices Communication | Logo, identité visuelle, site web & réseaux sociaux</title>
+<title>Felices Communication agence de communication digitale | Logo, identité visuelle, site web & réseaux sociaux</title>
       <meta
         name="description"
-        content="Felices Communication vous accompagne dans la création de votre identité visuelle, de vos supports graphiques, de votre site internet ainsi que dans la gestion de vos réseaux sociaux."
+        content="Felices Communication agence de communication digitale sur chambéry vous accompagne dans la création de votre identité visuelle, de vos supports graphiques, de votre site internet ainsi que dans la gestion de vos réseaux sociaux."
       />
     </Helmet>
 
