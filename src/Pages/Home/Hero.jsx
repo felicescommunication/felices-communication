@@ -1,9 +1,6 @@
 import { useEffect, useState, lazy, Suspense } from "react"
-
-import ColorBends from "../../components/UI/ColorBends"
-
+const ColorBends = lazy(() => import("../../components/UI/ColorBends"))
 const ShinyText = lazy(() => import("../../components/UI/ShinyText"))
-
 import arrowDown from "../../assets/arrow-down.svg"
 
 export default function Hero() {
@@ -12,59 +9,51 @@ export default function Hero() {
     "votre identité visuelle",
     "vos réseaux sociaux..."
   ]
-
-const [index, setIndex] = useState(0)
-const [displayText, setDisplayText] = useState(endings[0])
-const [fadeState, setFadeState] = useState("fade-in")
+  const [index, setIndex] = useState(0)
+  const [displayText, setDisplayText] = useState(endings[0])
+  const [fadeState, setFadeState] = useState("fade-in")
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-  setMounted(true)
-
-  const interval = setInterval(() => {
-    // fade OUT
-    setFadeState("fade-out")
-
-    setTimeout(() => {
-      setIndex((prev) => {
-        const next = (prev + 1) % endings.length
-        setDisplayText(endings[next])
-        return next
-      })
-
-      // fade IN
-      setFadeState("fade-in")
-    }, 400)
-  }, 2500)
-
-  return () => clearInterval(interval)
-}, [])
+    setMounted(true)
+    const interval = setInterval(() => {
+      setFadeState("fade-out")
+      setTimeout(() => {
+        setIndex((prev) => {
+          const next = (prev + 1) % endings.length
+          setDisplayText(endings[next])
+          return next
+        })
+        setFadeState("fade-in")
+      }, 400)
+    }, 2500)
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <section className="relative min-h-[100svh] flex items-center justify-center bg-[#F4EFC9] mb-24 lg:mb-32 overflow-hidden">
-
-
       {mounted && (
         <div className="absolute inset-0 z-0">
-          <ColorBends
-            rotation={30}
-            speed={0.1}
-            colors={["#55001a", "#ffd5fb", "#55001a"]}
-            transparent
-            autoRotate={0.05}
-            scale={1.2}
-            frequency={0.9}
-            warpStrength={1.1}
-            mouseInfluence={5}
-            parallax={3}
-            noise={0.0}
-          />
+          <Suspense fallback={null}>
+            <ColorBends
+              rotation={30}
+              speed={0.1}
+              colors={["#55001a", "#ffd5fb", "#55001a"]}
+              transparent
+              autoRotate={0.05}
+              scale={1.2}
+              frequency={0.9}
+              warpStrength={1.1}
+              mouseInfluence={5}
+              parallax={3}
+              noise={0.0}
+            />
+          </Suspense>
         </div>
       )}
 
       {/* H1 */}
       <div className="relative z-20 flex items-center justify-center w-full px-4 sm:px-6 lg:px-8 text-center">
-
         <h1 className="
           font-['Titan_One'] text-[#021d36] leading-[1.2]
           text-[clamp(2.6rem,8vw,4.5rem)]
@@ -73,8 +62,6 @@ const [fadeState, setFadeState] = useState("fade-in")
           xl:text-[clamp(6rem,6vw,13rem)]
           2xl:text-[clamp(7rem,5vw,15rem)]
         ">
-
-          {/* Ligne 1 */}
           {mounted ? (
             <Suspense fallback={"L'agence qui s'occupe de"}>
               <ShinyText
@@ -88,10 +75,7 @@ const [fadeState, setFadeState] = useState("fade-in")
           ) : (
             "L'agence qui s'occupe de"
           )}
-
           <br />
-
-          {/* Ligne 2 */}
           <span className={`fade ${fadeState}`}>
             {mounted ? (
               <Suspense fallback={endings[index]}>
@@ -107,7 +91,6 @@ const [fadeState, setFadeState] = useState("fade-in")
               endings[index]
             )}
           </span>
-
         </h1>
       </div>
 
@@ -116,13 +99,8 @@ const [fadeState, setFadeState] = useState("fade-in")
         onClick={() => window.scrollTo({ top: window.innerHeight, behavior: "smooth" })}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30"
       >
-        <img
-          src={arrowDown}
-          alt="scroll"
-          className="w-4 md:w-5 animate-bounce"
-        />
+        <img src={arrowDown} alt="scroll" className="w-4 md:w-5 animate-bounce" />
       </button>
-
     </section>
   )
 }

@@ -1,5 +1,16 @@
 import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import {
+  Scene,
+  OrthographicCamera,
+  PlaneGeometry,
+  ShaderMaterial,
+  Mesh,
+  WebGLRenderer,
+  Vector2,
+  Vector3,
+  Clock,
+  SRGBColorSpace
+} from 'three';
 import './ColorBends.css';
 
 const MAX_COLORS = 8;
@@ -81,9 +92,7 @@ void main() {
       float n = fract(sin(dot(gl_FragCoord.xy + vec2(uTime), vec2(12.9898, 78.233))) * 43758.5453123);
       col += (n - 0.5) * uNoise;
       col = clamp(col, 0.0, 1.0);
-    }
-
-    vec3 rgb = (uTransparent > 0) ? col * a : col;
+    } vec3 rgb = (uTransparent > 0) ? col * a : col;
     gl_FragColor = vec4(rgb, a);
 }
 `;
@@ -118,130 +127,164 @@ export default function ColorBends({
   const resizeObserverRef = useRef(null);
   const rotationRef = useRef(rotation);
   const autoRotateRef = useRef(autoRotate);
-  const pointerTargetRef = useRef(new THREE.Vector2(0, 0));
-  const pointerCurrentRef = useRef(new THREE.Vector2(0, 0));
+  const pointerTargetRef = useRef(new Vector2(0, 0));
+  const pointerCurrentRef = useRef(new Vector2(0, 0));
   const pointerSmoothRef = useRef(8);
+  const isVisibleRef = useRef(true);
 
   useEffect(() => {
     const container = containerRef.current;
-const scene = new THREE.Scene();
-const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    let cleanupFn = null;
+    let started = false;
 
-const isMobile = window.innerWidth < 768;
+    const initScene = () => {
+      if (started || !container) return;
+      started = true;
 
-const geometry = new THREE.PlaneGeometry(2, 2);
-    const uColorsArray = Array.from({ length: MAX_COLORS }, () => new THREE.Vector3(0, 0, 0));
-    const material = new THREE.ShaderMaterial({
-      vertexShader: vert,
-      fragmentShader: frag,
-      uniforms: {
-        uCanvas: { value: new THREE.Vector2(1, 1) },
-        uTime: { value: 0 },
-        uSpeed: { value: speed },
-        uRot: { value: new THREE.Vector2(1, 0) },
-        uColorCount: { value: 0 },
-        uColors: { value: uColorsArray },
-        uTransparent: { value: transparent ? 1 : 0 },
-        uScale: { value: scale },
-        uFrequency: { value: frequency },
-        uWarpStrength: { value: warpStrength },
-        uPointer: { value: new THREE.Vector2(0, 0) },
-        uMouseInfluence: {
-  value: isMobile ? 0 : mouseInfluence
-},
-uParallax: {
-  value: isMobile ? 0 : parallax
-},
-        uNoise: { value: noise }
-      },
-      premultipliedAlpha: true,
-      transparent: true
-    });
-    materialRef.current = material;
+      const scene = new Scene();
+      const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
+      const isMobile = window.innerWidth < 768;
 
-    const renderer = new THREE.WebGLRenderer({
-      antialias: false,
-      powerPreference: 'high-performance',
-      alpha: true
-    });
-    rendererRef.current = renderer;
- renderer.outputColorSpace = THREE.SRGBColorSpace;
+      const geometry = new PlaneGeometry(2, 2);
+      const uColorsArray = Array.from({ length: MAX_COLORS }, () => new Vector3(0, 0, 0));
+      const material = new ShaderMaterial({
+        vertexShader: vert,
+        fragmentShader: frag,
+        uniforms: {
+          uCanvas: { value: new Vector2(1, 1) },
+          uTime: { value: 0 },
+          uSpeed: { value: speed },
+          uRot: { value: new Vector2(1, 0) },
+          uColorCount: { value: 0 },
+          uColors: { value: uColorsArray },
+          uTransparent: { value: transparent ? 1 : 0 },
+          uScale: { value: scale },
+          uFrequency: { value: frequency },
+          uWarpStrength: { value: warpStrength },
+          uPointer: { value: new Vector2(0, 0) },
+          uMouseInfluence: { value: isMobile ? 0 : mouseInfluence },
+          uParallax: { value: isMobile ? 0 : parallax },
+          uNoise: { value: noise }
+        },
+        premultipliedAlpha: true,
+        transparent: true
+      });
+      materialRef.current = material;
 
-renderer.setPixelRatio(
-  isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 1.5)
-);
-    renderer.setClearColor(0x000000, transparent ? 0 : 1);
-    renderer.domElement.style.width = '100%';
-    renderer.domElement.style.height = '100%';
-    renderer.domElement.style.display = 'block';
-    container.appendChild(renderer.domElement);
+      const mesh = new Mesh(geometry, material);
+      scene.add(mesh);
 
-    const clock = new THREE.Clock();
+      const renderer = new WebGLRenderer({
+        antialias: false,
+        powerPreference: 'high-performance',
+        alpha: true
+      });
+      rendererRef.current = renderer;
+      renderer.outputColorSpace = SRGBColorSpace;
 
-    const handleResize = () => {
-      const w = container.clientWidth || 1;
-      const h = container.clientHeight || 1;
-      renderer.setSize(w, h, false);
-      material.uniforms.uCanvas.value.set(w, h);
+      renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 1.5));
+      renderer.setClearColor(0x000000, transparent ? 0 : 1);
+      renderer.domElement.style.width = '100%';
+      renderer.domElement.style.height = '100%';
+      renderer.domElement.style.display = 'block';
+      container.appendChild(renderer.domElement);
+
+      const clock = new Clock();
+
+      const handleResize = () => {
+        const w = container.clientWidth || 1;
+        const h = container.clientHeight || 1;
+        renderer.setSize(w, h, false);
+        material.uniforms.uCanvas.value.set(w, h);
+      };
+
+      handleResize();
+
+      if ('ResizeObserver' in window) {
+        const ro = new ResizeObserver(handleResize);
+        ro.observe(container);
+        resizeObserverRef.current = ro;
+      } else {
+        window.addEventListener('resize', handleResize);
+      }
+
+      // Compile le shader en avance (idle) pour éviter un pic de blocage au premier vrai render
+      renderer.compile(scene, camera);
+
+      let lastFrame = 0;
+      const loop = () => {
+        const now = performance.now();
+
+        if (now - lastFrame < 33) {
+          rafRef.current = requestAnimationFrame(loop);
+          return;
+        }
+        lastFrame = now;
+
+        const dt = clock.getDelta();
+        const elapsed = clock.elapsedTime;
+        material.uniforms.uTime.value = elapsed;
+
+        const deg = (rotationRef.current % 360) + autoRotateRef.current * elapsed;
+        const rad = (deg * Math.PI) / 180;
+        const c = Math.cos(rad);
+        const s = Math.sin(rad);
+        material.uniforms.uRot.value.set(c, s);
+
+        const cur = pointerCurrentRef.current;
+        const tgt = pointerTargetRef.current;
+        const amt = Math.min(1, dt * pointerSmoothRef.current);
+        cur.lerp(tgt, amt);
+        material.uniforms.uPointer.value.copy(cur);
+
+        if (!document.hidden && isVisibleRef.current) {
+          renderer.render(scene, camera);
+        }
+
+        rafRef.current = requestAnimationFrame(loop);
+      };
+      rafRef.current = requestAnimationFrame(loop);
+
+      cleanupFn = () => {
+        if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+        if (resizeObserverRef.current) resizeObserverRef.current.disconnect();
+        else window.removeEventListener('resize', handleResize);
+        geometry.dispose();
+        material.dispose();
+        renderer.dispose();
+        if (renderer.domElement && renderer.domElement.parentElement === container) {
+          container.removeChild(renderer.domElement);
+        }
+      };
     };
 
-    handleResize();
+    // --- Déclenchement différé : on attend le load + un idle callback ---
+    let idleId = null;
+    let loadListener = null;
 
-    if ('ResizeObserver' in window) {
-      const ro = new ResizeObserver(handleResize);
-      ro.observe(container);
-      resizeObserverRef.current = ro;
+    const scheduleInit = () => {
+      if ('requestIdleCallback' in window) {
+        idleId = requestIdleCallback(initScene, { timeout: 2000 });
+      } else {
+        idleId = setTimeout(initScene, 200);
+      }
+    };
+
+    if (document.readyState === 'complete') {
+      scheduleInit();
     } else {
-      window.addEventListener('resize', handleResize);
+      loadListener = () => scheduleInit();
+      window.addEventListener('load', loadListener, { once: true });
     }
-let lastFrame = 0;
-    const loop = () => {
-      const now = performance.now();
-
-if (now - lastFrame < 33) {
-  rafRef.current = requestAnimationFrame(loop);
-  return;
-}
-
-lastFrame = now;
-
-      const dt = clock.getDelta();
-      const elapsed = clock.elapsedTime;
-      material.uniforms.uTime.value = elapsed;
-
-      const deg = (rotationRef.current % 360) + autoRotateRef.current * elapsed;
-      const rad = (deg * Math.PI) / 180;
-      const c = Math.cos(rad);
-      const s = Math.sin(rad);
-      material.uniforms.uRot.value.set(c, s);
-
-      const cur = pointerCurrentRef.current;
-      const tgt = pointerTargetRef.current;
-      const amt = Math.min(1, dt * pointerSmoothRef.current);
-      cur.lerp(tgt, amt);
-      material.uniforms.uPointer.value.copy(cur);
-
-if (!document.hidden) {
-  renderer.render(scene, camera);
-}
-
-rafRef.current = requestAnimationFrame(loop);
-    };
-    rafRef.current = requestAnimationFrame(loop);
 
     return () => {
-      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
-      if (resizeObserverRef.current) resizeObserverRef.current.disconnect();
-      else window.removeEventListener('resize', handleResize);
-      geometry.dispose();
-      material.dispose();
-      renderer.dispose();
-      if (renderer.domElement && renderer.domElement.parentElement === container) {
-        container.removeChild(renderer.domElement);
+      if (loadListener) window.removeEventListener('load', loadListener);
+      if (idleId !== null) {
+        if ('cancelIdleCallback' in window) cancelIdleCallback(idleId);
+        else clearTimeout(idleId);
       }
+      if (cleanupFn) cleanupFn();
     };
   }, [frequency, mouseInfluence, noise, parallax, scale, speed, transparent, warpStrength]);
 
@@ -256,10 +299,10 @@ rafRef.current = requestAnimationFrame(loop);
     material.uniforms.uScale.value = scale;
     material.uniforms.uFrequency.value = frequency;
     material.uniforms.uWarpStrength.value = warpStrength;
-   const isMobile = window.innerWidth < 768;
+    const isMobile = window.innerWidth < 768;
 
-material.uniforms.uMouseInfluence.value = isMobile ? 0 : mouseInfluence;
-material.uniforms.uParallax.value = isMobile ? 0 : parallax;
+    material.uniforms.uMouseInfluence.value = isMobile ? 0 : mouseInfluence;
+    material.uniforms.uParallax.value = isMobile ? 0 : parallax;
     material.uniforms.uNoise.value = noise;
 
     const toVec3 = hex => {
@@ -268,7 +311,7 @@ material.uniforms.uParallax.value = isMobile ? 0 : parallax;
         h.length === 3
           ? [parseInt(h[0] + h[0], 16), parseInt(h[1] + h[1], 16), parseInt(h[2] + h[2], 16)]
           : [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
-      return new THREE.Vector3(v[0] / 255, v[1] / 255, v[2] / 255);
+      return new Vector3(v[0] / 255, v[1] / 255, v[2] / 255);
     };
 
     const arr = (colors || []).filter(Boolean).slice(0, MAX_COLORS).map(toVec3);
@@ -296,26 +339,41 @@ material.uniforms.uParallax.value = isMobile ? 0 : parallax;
   ]);
 
   useEffect(() => {
-  if (window.innerWidth < 768) return;
+    if (window.innerWidth < 768) return;
 
-  const container = containerRef.current;
-  if (!container) return;
+    const container = containerRef.current;
+    if (!container) return;
 
-  const handlePointerMove = (e) => {
-    const rect = container.getBoundingClientRect();
+    const handlePointerMove = e => {
+      const rect = container.getBoundingClientRect();
 
-    const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-    const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
+      const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
 
-    pointerTargetRef.current.set(x, y);
-  };
+      pointerTargetRef.current.set(x, y);
+    };
 
-  container.addEventListener("pointermove", handlePointerMove);
+    container.addEventListener('pointermove', handlePointerMove);
 
-  return () => {
-    container.removeEventListener("pointermove", handlePointerMove);
-  };
-}, []);
+    return () => {
+      container.removeEventListener('pointermove', handlePointerMove);
+    };
+  }, []);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || !('IntersectionObserver' in window)) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        isVisibleRef.current = entry.isIntersecting;
+      },
+      { threshold: 0 }
+    );
+    io.observe(container);
+
+    return () => io.disconnect();
+  }, []);
 
   return <div ref={containerRef} className={`color-bends-container ${className}`} style={style} />;
 }
