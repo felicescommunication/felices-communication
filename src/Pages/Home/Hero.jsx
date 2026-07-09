@@ -43,6 +43,7 @@ const [fadeState, setFadeState] = useState("fade-in")
   return (
     <section className="relative min-h-[100svh] flex items-center justify-center bg-[#F4EFC9] mb-24 lg:mb-32 overflow-hidden">
 
+{/*
       {mounted && (
         <div className="absolute inset-0 z-0">
           <ColorBends
@@ -60,7 +61,7 @@ const [fadeState, setFadeState] = useState("fade-in")
           />
         </div>
       )}
-
+*/}
       {/* H1 */}
       <div className="relative z-20 flex items-center justify-center w-full px-4 sm:px-6 lg:px-8 text-center">
 
