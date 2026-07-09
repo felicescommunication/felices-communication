@@ -13,9 +13,11 @@ export default function Hero() {
   const [displayText, setDisplayText] = useState(endings[0])
   const [fadeState, setFadeState] = useState("fade-in")
   const [mounted, setMounted] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     setMounted(true)
+    setIsMobile(window.innerWidth < 768)
     const interval = setInterval(() => {
       setFadeState("fade-out")
       setTimeout(() => {
@@ -50,7 +52,7 @@ export default function Hero() {
               speed={0.1}
               colors={["#55001a", "#ffd5fb", "#55001a"]}
               transparent
-              autoRotate={0.05}
+              autoRotate={isMobile ? -0.05 : 0.05}
               scale={1.2}
               frequency={0.9}
               warpStrength={1.1}
