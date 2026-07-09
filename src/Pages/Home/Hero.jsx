@@ -48,12 +48,12 @@ export default function Hero() {
         <div className="absolute inset-0 z-0">
           <Suspense fallback={null}>
             <ColorBends
-              rotation={30}
+              rotation={isMobile ? 330 : 30}
               speed={0.1}
               colors={["#55001a", "#ffd5fb", "#55001a"]}
               transparent
-              autoRotate={isMobile ? -0.05 : 0.05}
-              scale={1.2}
+              autoRotate={0.05}
+              scale={isMobile ? 1.6 : 1.2}
               frequency={0.9}
               warpStrength={1.1}
               mouseInfluence={5}
