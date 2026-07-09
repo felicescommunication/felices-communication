@@ -127,7 +127,8 @@ export default function ColorBends({
   warpStrength = 1,
   mouseInfluence = 1,
   parallax = 0.5,
-  noise = 0.1
+  noise = 0.1,
+  onFirstFrame
 }) {
   const containerRef = useRef(null);
   const rendererRef = useRef(null);
@@ -140,6 +141,7 @@ export default function ColorBends({
   const pointerCurrentRef = useRef(new Vector2(0, 0));
   const pointerSmoothRef = useRef(8);
   const isVisibleRef = useRef(true);
+  const firstFrameSentRef = useRef(false);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -255,6 +257,11 @@ export default function ColorBends({
 
         if (!document.hidden && isVisibleRef.current) {
           renderer.render(scene, camera);
+
+          if (!firstFrameSentRef.current) {
+            firstFrameSentRef.current = true;
+            if (typeof onFirstFrame === 'function') onFirstFrame();
+          }
         }
 
         rafRef.current = requestAnimationFrame(loop);

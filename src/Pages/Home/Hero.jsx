@@ -14,6 +14,9 @@ export default function Hero() {
   const [fadeState, setFadeState] = useState("fade-in")
   const [mounted, setMounted] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  // Passe à true seulement quand ColorBends a rendu sa première image réelle.
+  // Tant que c'est false, texte + fond restent invisibles pour apparaître ensemble.
+  const [bgReady, setBgReady] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -59,13 +62,18 @@ export default function Hero() {
               mouseInfluence={5}
               parallax={3}
               noise={0.0}
+              onFirstFrame={() => setBgReady(true)}
             />
           </Suspense>
         </div>
       )}
 
-      {/* H1 */}
-      <div className="relative z-20 flex items-center justify-center w-full px-4 sm:px-6 lg:px-8 text-center">
+      {/* H1 - révélé en même temps que le fond, via fondu synchronisé */}
+      <div
+        className={`relative z-20 flex items-center justify-center w-full px-4 sm:px-6 lg:px-8 text-center transition-opacity duration-500 ${
+          bgReady ? "opacity-100" : "opacity-0"
+        }`}
+      >
         <h1 className="
           font-['Titan_One'] text-[#021d36] leading-[1.2]
           text-[clamp(2.6rem,8vw,4.5rem)]
