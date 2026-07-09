@@ -105,6 +105,15 @@ void main() {
 }
 `;
 
+function hexToVec3(hex) {
+  const h = hex.replace('#', '').trim();
+  const v =
+    h.length === 3
+      ? [parseInt(h[0] + h[0], 16), parseInt(h[1] + h[1], 16), parseInt(h[2] + h[2], 16)]
+      : [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+  return new Vector3(v[0] / 255, v[1] / 255, v[2] / 255);
+}
+
 export default function ColorBends({
   className,
   style,
@@ -147,7 +156,10 @@ export default function ColorBends({
       const isMobile = window.innerWidth < 768;
 
       const geometry = new PlaneGeometry(2, 2);
-      const uColorsArray = Array.from({ length: MAX_COLORS }, () => new Vector3(0, 0, 0));
+      const initialColors = (colors || []).filter(Boolean).slice(0, MAX_COLORS).map(hexToVec3);
+      const uColorsArray = Array.from({ length: MAX_COLORS }, (_, i) =>
+        i < initialColors.length ? initialColors[i] : new Vector3(0, 0, 0)
+      );
       const material = new ShaderMaterial({
         vertexShader: vert,
         fragmentShader: frag,
@@ -156,7 +168,7 @@ export default function ColorBends({
           uTime: { value: 0 },
           uSpeed: { value: speed },
           uRot: { value: new Vector2(1, 0) },
-          uColorCount: { value: 0 },
+          uColorCount: { value: initialColors.length },
           uColors: { value: uColorsArray },
           uTransparent: { value: transparent ? 1 : 0 },
           uScale: { value: scale },
@@ -305,16 +317,7 @@ export default function ColorBends({
     material.uniforms.uParallax.value = isMobile ? 0 : parallax;
     material.uniforms.uNoise.value = noise;
 
-    const toVec3 = hex => {
-      const h = hex.replace('#', '').trim();
-      const v =
-        h.length === 3
-          ? [parseInt(h[0] + h[0], 16), parseInt(h[1] + h[1], 16), parseInt(h[2] + h[2], 16)]
-          : [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
-      return new Vector3(v[0] / 255, v[1] / 255, v[2] / 255);
-    };
-
-    const arr = (colors || []).filter(Boolean).slice(0, MAX_COLORS).map(toVec3);
+    const arr = (colors || []).filter(Boolean).slice(0, MAX_COLORS).map(hexToVec3);
     for (let i = 0; i < MAX_COLORS; i++) {
       const vec = material.uniforms.uColors.value[i];
       if (i < arr.length) vec.copy(arr[i]);
