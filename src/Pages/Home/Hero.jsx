@@ -13,9 +13,11 @@ export default function Hero() {
   const [displayText, setDisplayText] = useState(endings[0])
   const [fadeState, setFadeState] = useState("fade-in")
   const [mounted, setMounted] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     setMounted(true)
+    setIsMobile(window.innerWidth < 768)
     const interval = setInterval(() => {
       setFadeState("fade-out")
       setTimeout(() => {
@@ -46,13 +48,13 @@ export default function Hero() {
         <div className="absolute inset-0 z-0">
           <Suspense fallback={null}>
             <ColorBends
-              rotation={30}
+              rotation={isMobile ? 70 : 30}
               speed={0.1}
               colors={["#55001a", "#ffd5fb", "#55001a"]}
               transparent
               autoRotate={0.05}
-              scale={1.2}
-              frequency={0.9}
+              scale={isMobile ? 0.5 : 1.2}
+              frequency={isMobile ? 1.8 : 0.9}
               warpStrength={1.1}
               mouseInfluence={5}
               parallax={3}
