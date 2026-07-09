@@ -30,6 +30,16 @@ export default function Hero() {
     return () => clearInterval(interval)
   }, [])
 
+  // 👇 Nouveau useEffect à ajouter ici
+  useEffect(() => {
+    const preload = () => import("../../components/UI/ColorBends")
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(preload, { timeout: 3000 })
+    } else {
+      setTimeout(preload, 100)
+    }
+  }, [])
+
   return (
     <section className="relative min-h-[100svh] flex items-center justify-center bg-[#F4EFC9] mb-24 lg:mb-32 overflow-hidden">
       {mounted && (

@@ -195,7 +195,7 @@ export default function ColorBends({
       rendererRef.current = renderer;
       renderer.outputColorSpace = SRGBColorSpace;
 
-      renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 1.5));
+      renderer.setPixelRatio(isMobile ? 0.75 : Math.min(window.devicePixelRatio || 1, 1.5));
       renderer.setClearColor(0x000000, transparent ? 0 : 1);
       renderer.domElement.style.width = '100%';
       renderer.domElement.style.height = '100%';
