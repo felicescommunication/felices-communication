@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import fermeIcon from "../../assets/ferme2.png";
+import fermeIcon from "../../assets/ferme3.svg";
 
 function loadGA() {
   if (window.gtag) return;

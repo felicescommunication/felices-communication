@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useNavigate } from "react-router-dom"
 import Container from "../../components/UI/Container"
 import Button from "../../components/UI/Button"
-import closeIcon from "../../assets/ferme.png" 
+import closeIcon from "../../assets/ferme.svg" 
 
 export default function ContactHome() {
 
