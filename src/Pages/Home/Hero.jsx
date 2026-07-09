@@ -3,10 +3,6 @@ const ColorBends = lazy(() => import("../../components/UI/ColorBends"))
 const ShinyText = lazy(() => import("../../components/UI/ShinyText"))
 import arrowDown from "../../assets/arrow-down.svg"
 
-// Fréquence de base calibrée sur un écran large de référence (16:9, type desktop)
-const BASE_FREQUENCY = 0.9
-const REFERENCE_ASPECT = 16 / 9
-
 export default function Hero() {
   const endings = [
     "votre stratégie",
@@ -17,17 +13,9 @@ export default function Hero() {
   const [displayText, setDisplayText] = useState(endings[0])
   const [fadeState, setFadeState] = useState("fade-in")
   const [mounted, setMounted] = useState(false)
-  const [frequency, setFrequency] = useState(BASE_FREQUENCY)
 
   useEffect(() => {
     setMounted(true)
-
-    // Calcule la fréquence nécessaire pour reproduire la même densité de vagues
-    // que sur un écran large, quel que soit le ratio largeur/hauteur réel de l'écran.
-    const aspect = window.innerWidth / window.innerHeight
-    const computedFrequency = BASE_FREQUENCY * (REFERENCE_ASPECT / aspect)
-    setFrequency(computedFrequency)
-
     const interval = setInterval(() => {
       setFadeState("fade-out")
       setTimeout(() => {
@@ -64,7 +52,7 @@ export default function Hero() {
               transparent
               autoRotate={0.05}
               scale={1.2}
-              frequency={frequency}
+              frequency={0.9}
               warpStrength={1.1}
               mouseInfluence={5}
               parallax={3}
