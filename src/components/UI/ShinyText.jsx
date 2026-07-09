@@ -19,58 +19,58 @@ const ShinyText = ({
   const progress = useMotionValue(0);
   const elapsedRef = useRef(0);
   const lastTimeRef = useRef(null);
+  const lastUpdateRef = useRef(0);
   const directionRef = useRef(direction === 'left' ? 1 : -1);
-
   const animationDuration = speed * 1000;
   const delayDuration = delay * 1000;
+
+  // Repeint le dégradé au maximum ~30 fois/seconde au lieu de 60.
+  // "background-clip: text" force un repaint coûteux (non accéléré GPU) à chaque
+  // mise à jour, donc réduire la fréquence de mise à jour visuelle allège nettement
+  // la charge sur mobile sans changer la vitesse perçue de l'animation.
+  const UPDATE_INTERVAL = 33;
 
   useAnimationFrame(time => {
     if (disabled || isPaused) {
       lastTimeRef.current = null;
       return;
     }
-
     if (lastTimeRef.current === null) {
       lastTimeRef.current = time;
       return;
     }
-
     const deltaTime = time - lastTimeRef.current;
     lastTimeRef.current = time;
-
     elapsedRef.current += deltaTime;
+
+    if (time - lastUpdateRef.current < UPDATE_INTERVAL) {
+      return;
+    }
+    lastUpdateRef.current = time;
 
     if (yoyo) {
       const cycleDuration = animationDuration + delayDuration;
       const fullCycle = cycleDuration * 2;
       const cycleTime = elapsedRef.current % fullCycle;
-
       if (cycleTime < animationDuration) {
-    
         const p = (cycleTime / animationDuration) * 100;
         progress.set(directionRef.current === 1 ? p : 100 - p);
       } else if (cycleTime < cycleDuration) {
-    
         progress.set(directionRef.current === 1 ? 100 : 0);
       } else if (cycleTime < cycleDuration + animationDuration) {
-   
         const reverseTime = cycleTime - cycleDuration;
         const p = 100 - (reverseTime / animationDuration) * 100;
         progress.set(directionRef.current === 1 ? p : 100 - p);
       } else {
-
         progress.set(directionRef.current === 1 ? 0 : 100);
       }
     } else {
       const cycleDuration = animationDuration + delayDuration;
       const cycleTime = elapsedRef.current % cycleDuration;
-
       if (cycleTime < animationDuration) {
- 
         const p = (cycleTime / animationDuration) * 100;
         progress.set(directionRef.current === 1 ? p : 100 - p);
       } else {
-       
         progress.set(directionRef.current === 1 ? 100 : 0);
       }
     }
@@ -80,10 +80,8 @@ const ShinyText = ({
     directionRef.current = direction === 'left' ? 1 : -1;
     elapsedRef.current = 0;
     progress.set(0);
-
   }, [direction]);
 
-  
   const backgroundPosition = useTransform(progress, p => `${150 - p * 2}% center`);
 
   const handleMouseEnter = useCallback(() => {
