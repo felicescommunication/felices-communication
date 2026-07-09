@@ -225,14 +225,11 @@ export default function ColorBends({
       renderer.compile(scene, camera);
 
       let lastFrame = 0;
-      const startTime = performance.now();
+      // 20fps constant : suffisant pour un mouvement fluide à l'œil sur ce type
+      // d'animation lente, tout en réduisant nettement la charge par rapport à 30-60fps
+      const frameInterval = 50;
       const loop = () => {
         const now = performance.now();
-
-        // Pendant les 3 premières secondes : 15fps (animation bien visible dès l'arrivée)
-        // Après : 6fps (largement suffisant pour un effet ambiant fluide, beaucoup moins de charge)
-        const elapsedSinceStart = now - startTime;
-        const frameInterval = elapsedSinceStart < 3000 ? 66 : 166;
 
         if (now - lastFrame < frameInterval) {
           rafRef.current = requestAnimationFrame(loop);
