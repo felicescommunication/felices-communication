@@ -124,10 +124,12 @@ export default function ColorBends({
 
   useEffect(() => {
     const container = containerRef.current;
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+const scene = new THREE.Scene();
+const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
-    const geometry = new THREE.PlaneGeometry(2, 2);
+const isMobile = window.innerWidth < 768;
+
+const geometry = new THREE.PlaneGeometry(2, 2);
     const uColorsArray = Array.from({ length: MAX_COLORS }, () => new THREE.Vector3(0, 0, 0));
     const material = new THREE.ShaderMaterial({
       vertexShader: vert,
@@ -144,8 +146,12 @@ export default function ColorBends({
         uFrequency: { value: frequency },
         uWarpStrength: { value: warpStrength },
         uPointer: { value: new THREE.Vector2(0, 0) },
-        uMouseInfluence: { value: mouseInfluence },
-        uParallax: { value: parallax },
+        uMouseInfluence: {
+  value: isMobile ? 0 : mouseInfluence
+},
+uParallax: {
+  value: isMobile ? 0 : parallax
+},
         uNoise: { value: noise }
       },
       premultipliedAlpha: true,
@@ -162,13 +168,11 @@ export default function ColorBends({
       alpha: true
     });
     rendererRef.current = renderer;
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-const pixelRatio =
-  window.innerWidth < 768
-    ? 1
-    : Math.min(window.devicePixelRatio || 1, 1.5);
+ renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-renderer.setPixelRatio(pixelRatio);
+renderer.setPixelRatio(
+  isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 1.5)
+);
     renderer.setClearColor(0x000000, transparent ? 0 : 1);
     renderer.domElement.style.width = '100%';
     renderer.domElement.style.height = '100%';
@@ -193,8 +197,17 @@ renderer.setPixelRatio(pixelRatio);
     } else {
       window.addEventListener('resize', handleResize);
     }
-
+let lastFrame = 0;
     const loop = () => {
+      const now = performance.now();
+
+if (now - lastFrame < 33) {
+  rafRef.current = requestAnimationFrame(loop);
+  return;
+}
+
+lastFrame = now;
+
       const dt = clock.getDelta();
       const elapsed = clock.elapsedTime;
       material.uniforms.uTime.value = elapsed;
@@ -210,8 +223,12 @@ renderer.setPixelRatio(pixelRatio);
       const amt = Math.min(1, dt * pointerSmoothRef.current);
       cur.lerp(tgt, amt);
       material.uniforms.uPointer.value.copy(cur);
-      renderer.render(scene, camera);
-      rafRef.current = requestAnimationFrame(loop);
+
+if (!document.hidden) {
+  renderer.render(scene, camera);
+}
+
+rafRef.current = requestAnimationFrame(loop);
     };
     rafRef.current = requestAnimationFrame(loop);
 
@@ -239,8 +256,10 @@ renderer.setPixelRatio(pixelRatio);
     material.uniforms.uScale.value = scale;
     material.uniforms.uFrequency.value = frequency;
     material.uniforms.uWarpStrength.value = warpStrength;
-    material.uniforms.uMouseInfluence.value = mouseInfluence;
-    material.uniforms.uParallax.value = parallax;
+   const isMobile = window.innerWidth < 768;
+
+material.uniforms.uMouseInfluence.value = isMobile ? 0 : mouseInfluence;
+material.uniforms.uParallax.value = isMobile ? 0 : parallax;
     material.uniforms.uNoise.value = noise;
 
     const toVec3 = hex => {
@@ -277,22 +296,26 @@ renderer.setPixelRatio(pixelRatio);
   ]);
 
   useEffect(() => {
-    const material = materialRef.current;
-    const container = containerRef.current;
-    if (!material || !container) return;
+  if (window.innerWidth < 768) return;
 
-    const handlePointerMove = e => {
-      const rect = container.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / (rect.width || 1)) * 2 - 1;
-      const y = -(((e.clientY - rect.top) / (rect.height || 1)) * 2 - 1);
-      pointerTargetRef.current.set(x, y);
-    };
+  const container = containerRef.current;
+  if (!container) return;
 
-    container.addEventListener('pointermove', handlePointerMove);
-    return () => {
-      container.removeEventListener('pointermove', handlePointerMove);
-    };
-  }, []);
+  const handlePointerMove = (e) => {
+    const rect = container.getBoundingClientRect();
+
+    const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
+
+    pointerTargetRef.current.set(x, y);
+  };
+
+  container.addEventListener("pointermove", handlePointerMove);
+
+  return () => {
+    container.removeEventListener("pointermove", handlePointerMove);
+  };
+}, []);
 
   return <div ref={containerRef} className={`color-bends-container ${className}`} style={style} />;
 }
