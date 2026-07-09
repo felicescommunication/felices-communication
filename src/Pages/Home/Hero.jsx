@@ -30,7 +30,7 @@ export default function Hero() {
     return () => clearInterval(interval)
   }, [])
 
-  // 👇 Nouveau useEffect à ajouter ici
+  // Précharge le chunk JS de ColorBends tôt, sans l'exécuter immédiatement
   useEffect(() => {
     const preload = () => import("../../components/UI/ColorBends")
     if ('requestIdleCallback' in window) {
@@ -72,6 +72,7 @@ export default function Hero() {
           xl:text-[clamp(6rem,6vw,13rem)]
           2xl:text-[clamp(7rem,5vw,15rem)]
         ">
+          {/* Ligne 1 */}
           {mounted ? (
             <Suspense fallback={"L'agence qui s'occupe de"}>
               <ShinyText
@@ -86,20 +87,23 @@ export default function Hero() {
             "L'agence qui s'occupe de"
           )}
           <br />
-          <span className={`fade ${fadeState}`}>
-            {mounted ? (
-              <Suspense fallback={endings[index]}>
-                <ShinyText
-                  text={displayText}
-                  speed={2.5}
-                  color="#021d36"
-                  shineColor="#00427c"
-                  spread={130}
-                />
-              </Suspense>
-            ) : (
-              endings[index]
-            )}
+          {/* Ligne 2 */}
+          <span className="fade-wrapper block min-h-[2.4em] md:min-h-0">
+            <span className={`fade ${fadeState} block`}>
+              {mounted ? (
+                <Suspense fallback={endings[index]}>
+                  <ShinyText
+                    text={displayText}
+                    speed={2.5}
+                    color="#021d36"
+                    shineColor="#00427c"
+                    spread={130}
+                  />
+                </Suspense>
+              ) : (
+                endings[index]
+              )}
+            </span>
           </span>
         </h1>
       </div>
@@ -109,7 +113,11 @@ export default function Hero() {
         onClick={() => window.scrollTo({ top: window.innerHeight, behavior: "smooth" })}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30"
       >
-        <img src={arrowDown} alt="scroll" className="w-4 md:w-5 animate-bounce" />
+        <img
+          src={arrowDown}
+          alt="scroll"
+          className="w-4 md:w-5 animate-bounce"
+        />
       </button>
     </section>
   )
